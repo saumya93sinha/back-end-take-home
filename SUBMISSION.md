@@ -67,17 +67,18 @@ Explanation of Code:
 	i) Guestlogix.WebAPI 
 	This is the WebAPI project and RouteController.cs is the controller where API methods are present.
 	We have two API methods:
-		a)http://localhost:54243/route/getshortestroute - This is to get the shortest route
-		It requires one object of RouteSearchParam class(created by me) as param. 
+		a)http://localhost:54243/route/getshortestroute - GET Request - This is to get the shortest route
+		It requires two string params : origin and destination. 
 		From Postman we can hit this web API by setting header as Content-Type = 'application/json'
-		and raw body data like
-		{
-       "Origin": "ABJ",
-        "Destination": "BRU"        
-		}
-		It will return the shortest route as string between origin and destination
+		and setting Params
+		Key:  Value
+		origin: "ABJ"
+		destination: "BOS"
+		It will return the shortest route as string between origin and destination.
+		
+		I have appended the series of resultant routes into a string and am showing the shortest route as a string to the User.
 	
-		b)http://localhost:54243/route/getairports - This will fetch list of all the airports.
+		b)http://localhost:54243/route/getairports - GET Request - This will fetch list of all the airports.
 		I am using this to populate origin and destination drop-downs on UI.
 		
 	ii) Guestlogix.Business
@@ -103,6 +104,17 @@ Explanation of Code:
 2. GuestlogixUI -- Frontend Framework
     This has components, services, models, modules, routing modules.
 	Typescript, HTML and CSS are used in creating this Angular Application.
+	Url : http://localhost:4200/
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+Assumptions:
+1. I have changed the TwoDigitCode of Air China in airline.csv from CA to AC.
+2. I am considering airports with empty or null IATA3 value as Invalid Airports.
+3. There are many airports that have IATA3 value as '\N'. All those airports are considered same.
+	For example if both the origin airport's and destination's airport IATA3 value is '\N', then they will be considered as same airports(same origin and destination)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 Proper comments have been placed in the code for better code understanding and maintainability.
 I have also attached screenshots of WebAPI and Application main UI page for reference.
