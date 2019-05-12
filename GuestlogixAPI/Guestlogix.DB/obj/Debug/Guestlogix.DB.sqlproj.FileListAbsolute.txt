@@ -1,0 +1,5 @@
+C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.DB\bin\Debug\Guestlogix.DB.dacpac
+C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.DB\bin\Debug\Guestlogix.DB.dll
+C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.DB\bin\Debug\Guestlogix.DB.pdb
+C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.DB\obj\Debug\Guestlogix.DB.dll
+C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.DB\obj\Debug\Guestlogix.DB.pdb

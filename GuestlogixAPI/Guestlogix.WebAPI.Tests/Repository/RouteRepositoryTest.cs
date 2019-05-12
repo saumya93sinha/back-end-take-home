@@ -15,26 +15,33 @@ namespace Guestlogix.WebAPI.Tests.Controllers
         [TestInitialize]
         public void TestInitialize()
         {
+            //Set some initial data as we are not reading CSVs here
             List<AirportModel> airports = new List<AirportModel>();
-            airports.Add(new AirportModel { IATA3 = "A1" });
-            airports.Add(new AirportModel { IATA3 = "A2" });
-            airports.Add(new AirportModel { IATA3 = "A3" });
-            airports.Add(new AirportModel { IATA3 = "A4" });
+            airports.Add(new AirportModel("Port Bouet Airport", "Abidjan", "Cote d'Ivoire", "ABJ", 5.261390209, -3.926290035));
+            airports.Add(new AirportModel("Brussels Airport","Brussels","Belgium","BRU",50.90140152,4.48443985));
+            airports.Add(new AirportModel("Lester B. Pearson International Airport","Toronto","Canada","YYZ",43.67720032,-79.63059998));
+            airports.Add(new AirportModel("General Edward Lawrence Logan International Airport","Boston","United States","BOS",42.36429977,-71.00520325));
 
             List<AirlineModel> airlines = new List<AirlineModel>();
-            airlines.Add(new AirlineModel { TwoDigitCode = "A1" });
-            airlines.Add(new AirlineModel { TwoDigitCode = "A2" });
-            airlines.Add(new AirlineModel { TwoDigitCode = "A3" });
-            airlines.Add(new AirlineModel { TwoDigitCode = "A4" });
+            airlines.Add(new AirlineModel("Air China", "AC", "CCA", "China"));
+            airlines.Add(new AirlineModel("China Southern Airlines", "CZ", "CSN", "China"));
+            airlines.Add(new AirlineModel("Southwest Airlines", "WN", "SWA", "United States"));
+            airlines.Add(new AirlineModel("Turkish Airlines", "TK", "THY", "Turkey"));
+            airlines.Add(new AirlineModel("United Airlines", "UA", "UAL", "United States"));
+            airlines.Add(new AirlineModel("WestJet", "WS", "WJA", "Canada"));
 
             List<RouteModel> routes = new List<RouteModel>();
-            routes.Add(new RouteModel { Origin = "A1", Destination = "A2" });
-            routes.Add(new RouteModel { Origin = "A1", Destination = "A3" });
-            routes.Add(new RouteModel { Origin = "A2", Destination = "A3" });
-            routes.Add(new RouteModel { Origin = "A2", Destination = "A4" });
-            _routeRepository = new RouteRepository(airports, airlines, routes); 
+            routes.Add(new RouteModel("AC", "ABJ", "BRU"));
+            routes.Add(new RouteModel("CZ", "BRU", "YYZ"));
+            routes.Add(new RouteModel("UA", "ABJ", "BOS"));
+            routes.Add(new RouteModel("TK", "BRU", "BOS"));
+
+            _routeRepository = new RouteRepository(airports, airlines, routes);
         }
         
+        /// <summary>
+        /// Checks for same origin and destination
+        /// </summary>
         [TestMethod]
         public void GetShortestRoute_SameOriginDestination()
         {
@@ -51,6 +58,9 @@ namespace Guestlogix.WebAPI.Tests.Controllers
             
         }
 
+        /// <summary>
+        /// Checks for origin and destination that are not present in Airports data
+        /// </summary>
         [TestMethod]
         public void GetShortestRoute_InvalidOriginDestination()
         {
@@ -67,6 +77,9 @@ namespace Guestlogix.WebAPI.Tests.Controllers
 
         }
 
+        /// <summary>
+        /// Checks if null values are set for origin or destination
+        /// </summary>
         [TestMethod]
         public void GetShortestRoute_NullRoutes()
         {
@@ -83,20 +96,87 @@ namespace Guestlogix.WebAPI.Tests.Controllers
 
         }
 
+        /// <summary>
+        /// ABJ and BRU has direct connection. This test validates that.
+        /// </summary>
         [TestMethod]
-        public void GetShortestRoute_Case1()
+        public void GetShortestRoute_CaseDirectRoute()
         {
             // Arrange
-            string origin = "A1";
-            string destination = "A3";
+            string origin = "ABJ";
+            string destination = "BRU";
 
             // Act
             var result = _routeRepository.GetShortestRoute(origin, destination);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreNotEqual(ApplicationConstants.InvalidOriginDestination, result);
+            Assert.AreEqual("ABJ(Port Bouet Airport) to BRU(Brussels Airport) by AC(Air China)\r\n", result);
 
+        }
+
+        /// <summary>
+        /// Checks if No Route found between origin and destination
+        /// </summary>
+        [TestMethod]
+        public void GetShortestRoute_CaseNoRouteFound()
+        {
+            // Arrange
+            string origin = "YYZ";
+            string destination = "BOS";
+
+            // Act
+            var result = _routeRepository.GetShortestRoute(origin, destination);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(ApplicationConstants.NoRouteFound, result);
+
+        }
+
+        /// <summary>
+        /// ABJ and BOS has direct route as well as Route via ABJ==>BRU==>BOS.
+        /// This test checks if the method is returning the shortest route.
+        /// </summary>
+        [TestMethod]
+        public void GetShortestRoute_CaseShortestDirectRoute()
+        {
+            // Arrange
+            string origin = "ABJ";
+            string destination = "BOS";
+
+            // Act
+            var result = _routeRepository.GetShortestRoute(origin, destination);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ABJ(Port Bouet Airport) to BOS(General Edward Lawrence Logan International Airport) by UA(United Airlines)\r\n", result);
+
+        }
+
+        /// <summary>
+        /// Checks for one connecting flight i.e. ABJ==>BRU==>YYZ
+        /// </summary>
+        [TestMethod]
+        public void GetShortestRoute_CaseOneConnectingFlight()
+        {
+            // Arrange
+            string origin = "ABJ";
+            string destination = "YYZ";
+
+            // Act
+            var result = _routeRepository.GetShortestRoute(origin, destination);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("ABJ(Port Bouet Airport) to BRU(Brussels Airport) by AC(Air China)\r\n ==>> BRU(Brussels Airport) to YYZ(Lester B. Pearson International Airport) by CZ(China Southern Airlines)\r\n", result);
+
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            _routeRepository = null;
         }
     }
     

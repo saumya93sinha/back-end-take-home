@@ -10,7 +10,6 @@ using System.Web.Http;
 
 namespace Guestlogix.WebAPI.Controllers
 {
-    //[Authorize]
     public class RouteController : ApiController
     {
         private readonly IRouteBusinessLayer _routeBAL;
@@ -20,6 +19,10 @@ namespace Guestlogix.WebAPI.Controllers
             this._routeBAL = new RouteBusinessLayer();
         }
 
+        /// <summary>
+        /// This api method fetches the list of all Airports from Airport.csv that will be populated in the origin and destination dropdowns on UI
+        /// </summary>
+        /// <returns>List of AirportModel objects</returns>
         [HttpGet]
         [Route("route/getairports")]
         public List<AirportModel> GetAirports()
@@ -27,6 +30,11 @@ namespace Guestlogix.WebAPI.Controllers
             return _routeBAL.GetAirports();
         }
 
+        /// <summary>
+        /// This api method calculates the shortest route between two Airports
+        /// </summary>
+        /// <param name="routeSearchParam"></param>
+        /// <returns>Shortest route as a string</returns>
         [HttpPost]
         [Route("route/getshortestroute")]
         public IHttpActionResult GetShortestRoute(RouteSearchParam routeSearchParam)

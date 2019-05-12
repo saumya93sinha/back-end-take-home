@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guestlogix.Business", "Gues
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guestlogix.Data", "Guestlogix.Data\Guestlogix.Data.csproj", "{9BE4D736-2ECF-424D-AEEF-CA85007F95C7}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Guestlogix.DB", "Guestlogix.DB\Guestlogix.DB.sqlproj", "{75B4F950-D5EC-495E-88AA-129692D2D82E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,12 @@ Global
 		{9BE4D736-2ECF-424D-AEEF-CA85007F95C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BE4D736-2ECF-424D-AEEF-CA85007F95C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BE4D736-2ECF-424D-AEEF-CA85007F95C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75B4F950-D5EC-495E-88AA-129692D2D82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75B4F950-D5EC-495E-88AA-129692D2D82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75B4F950-D5EC-495E-88AA-129692D2D82E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{75B4F950-D5EC-495E-88AA-129692D2D82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75B4F950-D5EC-495E-88AA-129692D2D82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75B4F950-D5EC-495E-88AA-129692D2D82E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

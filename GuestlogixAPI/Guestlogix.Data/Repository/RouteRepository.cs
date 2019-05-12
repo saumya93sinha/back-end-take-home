@@ -10,17 +10,25 @@ namespace Guestlogix.Data.Repository
 {
     public class RouteRepository : IRouteRepository
     {
+        #region PrivateVariables
         private List<AirportModel> airportList;
         private List<AirlineModel> airlineList;
         private List<RouteModel> routeList;
         private const string AirlinesFile = "airlines.csv";
         private const string AirportsFile = "airports.csv";
         private const string RoutesFile = "routes.csv";
+        #endregion
 
+        #region Properties
         public List<AirportModel> AirportList { get { return airportList; } }
         public List<AirlineModel> AirlineList { get { return airlineList; } }
         public List<RouteModel> RouteList { get { return routeList; } }
+        #endregion
 
+        #region Constructor
+        /// <summary>
+        /// Constructor used by when api call is made
+        /// </summary>
         public RouteRepository()
         {
             airportList = GetAirports();
@@ -28,15 +36,25 @@ namespace Guestlogix.Data.Repository
             routeList = GetRoutes();
         }
 
+        /// <summary>
+        /// Constructor used while running Test cases
+        /// </summary>
+        /// <param name="airportList"></param>
+        /// <param name="airlineList"></param>
+        /// <param name="routeList"></param>
         public RouteRepository(List<AirportModel> airportList, List<AirlineModel> airlineList, List<RouteModel> routeList)
         {
-
             this.airportList = airportList;
             this.airlineList = airlineList;
             this.routeList = routeList;
-
         }
+        #endregion
 
+        #region PrivateMethods
+        /// <summary>
+        /// Used to populate AirlineList from airlines.csv
+        /// </summary>
+        /// <returns>List of objects of AirlineModel</returns>
         private List<AirlineModel> GetAirlines()
         {
             string path = HttpContext.Current.Server.MapPath("~/data/") + AirlinesFile;
@@ -60,35 +78,10 @@ namespace Guestlogix.Data.Repository
             return airlines;
         }
 
-        public List<AirportModel> GetAirports()
-        {
-            string path = HttpContext.Current.Server.MapPath("~/data/") + AirportsFile;
-            TextFieldParser txtParser = new TextFieldParser(path);
-            List<AirportModel> airports = new List<AirportModel>();
-            txtParser.HasFieldsEnclosedInQuotes = true;
-            txtParser.SetDelimiters(",");
-            txtParser.ReadLine();
-            while (!txtParser.EndOfData)
-            {
-                string[] fields = txtParser.ReadFields();
-                if (fields[3].Trim().ToUpper() != "\\N")
-                {
-                    airports.Add(new AirportModel
-                    {
-                        Name = fields[0].Trim(),
-                        City = fields[1].Trim(),
-                        Country = fields[2].Trim(),
-                        IATA3 = fields[3].Trim().ToUpper(),
-                        Latitude = double.Parse(fields[4].Trim()),
-                        Longitude = double.Parse(fields[5].Trim())
-                    });
-                }
-            }
-            txtParser.Close();
-
-            return airports.OrderBy(x => x.IATA3).ToList(); ;
-        }
-
+        /// <summary>
+        /// Used to populate RouteList from routes.csv
+        /// </summary>
+        /// <returns>List of objects of RouteModel</returns>
         private List<RouteModel> GetRoutes()
         {
             string path = HttpContext.Current.Server.MapPath("~/data/") + RoutesFile;
@@ -111,55 +104,14 @@ namespace Guestlogix.Data.Repository
             return routes;
         }
 
-        public string GetShortestRoute(string origin, string destination)
-        {
-            string shortestPath = ApplicationConstants.NoRouteFound;
-
-            if(origin != null && destination != null && origin == destination)
-            {
-                shortestPath = ApplicationConstants.SameOriginDestination;
-                return shortestPath;
-            }
-
-            if (origin != null && destination != null && airportList.Any(x => x.IATA3 == origin) && airportList.Any(x => x.IATA3 == destination))
-            {
-                origin = origin.ToUpper();
-                destination = destination.ToUpper();
-
-                //This step will convert tree node and child structures for all origins and flights originating from them
-                Dictionary<string, List<RouteModel>> originFlightTree = new Dictionary<string, List<RouteModel>>();
-                foreach (var route in routeList)
-                {
-                    if (!originFlightTree.ContainsKey(route.Origin))
-                    {
-                        originFlightTree[route.Origin] = new List<RouteModel>();
-                    }
-                    originFlightTree[route.Origin].Add(route);
-                }
-
-                //Using Breadth First Search Algorithm to get all connections till destination airport between AirportNodes of the path tree with shortest distance between them
-                Dictionary<string, RouteModel> directPathNodes = GetDirectPathNodes(origin, destination, originFlightTree);
-
-                ////Get the shortest path between origin and destination airports
-                List<RouteModel> finalRoutes = new List<RouteModel>();
-                for (var a = destination; directPathNodes.ContainsKey(a); a = directPathNodes[a].Origin)
-                {
-                    finalRoutes.Insert(0, directPathNodes[a]);
-                }
-
-                if (finalRoutes.Count != 0)
-                {
-                    shortestPath = GetShortestPath(finalRoutes);
-                }
-            }
-            else
-            {
-                shortestPath = ApplicationConstants.InvalidOriginDestination;
-            }
-            
-            return shortestPath;
-        }
-
+        /// <summary>
+        /// Using Breadth First Search Algorithm to get all connections till 
+        /// destination airport between AirportNodes of the path tree with shortest distance between them
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="destination"></param>
+        /// <param name="originFlightTree"></param>
+        /// <returns>Dictionary<string, RouteModel></returns>
         private Dictionary<string, RouteModel> GetDirectPathNodes(string origin, string destination, Dictionary<string, List<RouteModel>> originFlightTree)
         {
             Queue<string> breadthLevelAirportNodes = new Queue<string>();
@@ -190,6 +142,12 @@ namespace Guestlogix.Data.Repository
 
             return directPathNodes;
         }
+
+        /// <summary>
+        /// Returns the string value containing exact route by Flight name to be shown to users
+        /// </summary>
+        /// <param name="finalRoutes"></param>
+        /// <returns>string</returns>
         private string GetShortestPath(List<RouteModel> finalRoutes)
         {
             string resultPath = String.Empty;
@@ -204,5 +162,96 @@ namespace Guestlogix.Data.Repository
 
             return resultPath;
         }
+        #endregion
+
+        #region PublicMethods
+        /// <summary>
+        /// Used to populate AirportList from airports.csv
+        /// </summary>
+        /// <returns>List of objects of AirportModel</returns>
+        public List<AirportModel> GetAirports()
+        {
+            string path = HttpContext.Current.Server.MapPath("~/data/") + AirportsFile;
+            TextFieldParser txtParser = new TextFieldParser(path);
+            List<AirportModel> airports = new List<AirportModel>();
+            txtParser.HasFieldsEnclosedInQuotes = true;
+            txtParser.SetDelimiters(",");
+            txtParser.ReadLine();
+            while (!txtParser.EndOfData)
+            {
+                string[] fields = txtParser.ReadFields();
+                //if (fields[3].Trim().ToUpper() != "\\N")
+                //{
+                    airports.Add(new AirportModel
+                    {
+                        Name = fields[0].Trim(),
+                        City = fields[1].Trim(),
+                        Country = fields[2].Trim(),
+                        IATA3 = fields[3].Trim().ToUpper(),
+                        Latitude = double.Parse(fields[4].Trim()),
+                        Longitude = double.Parse(fields[5].Trim())
+                    });
+                //}
+            }
+            txtParser.Close();
+
+            return airports.OrderBy(x => x.IATA3).ToList(); ;
+        }
+
+        /// <summary>
+        /// Calculates shortest route by tree node and BFS method
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="destination"></param>
+        /// <returns>string</returns>
+        public string GetShortestRoute(string origin, string destination)
+        {
+            string shortestPath = ApplicationConstants.NoRouteFound;
+
+            if (origin != null && destination != null && origin == destination)
+            {
+                shortestPath = ApplicationConstants.SameOriginDestination;
+                return shortestPath;
+            }
+
+            if (origin != null && destination != null && airportList.Any(x => x.IATA3 == origin) && airportList.Any(x => x.IATA3 == destination))
+            {
+                origin = origin.ToUpper();
+                destination = destination.ToUpper();
+
+                //This step will convert tree node and child structures for all origins and flights originating from them
+                Dictionary<string, List<RouteModel>> originFlightTree = new Dictionary<string, List<RouteModel>>();
+                foreach (var route in routeList)
+                {
+                    if (!originFlightTree.ContainsKey(route.Origin))
+                    {
+                        originFlightTree[route.Origin] = new List<RouteModel>();
+                    }
+                    originFlightTree[route.Origin].Add(route);
+                }
+
+                //Using Breadth First Search Algorithm to get all connections till destination airport between AirportNodes of the path tree with shortest distance between them
+                Dictionary<string, RouteModel> directPathNodes = GetDirectPathNodes(origin, destination, originFlightTree);
+
+                //Get the shortest path between origin and destination airports
+                List<RouteModel> finalRoutes = new List<RouteModel>();
+                for (var i = destination; directPathNodes.ContainsKey(i); i = directPathNodes[i].Origin)
+                {
+                    finalRoutes.Insert(0, directPathNodes[i]);
+                }
+
+                if (finalRoutes.Count != 0)
+                {
+                    shortestPath = GetShortestPath(finalRoutes);
+                }
+            }
+            else
+            {
+                shortestPath = ApplicationConstants.InvalidOriginDestination;
+            }
+
+            return shortestPath;
+        }
+        #endregion
     }
 }

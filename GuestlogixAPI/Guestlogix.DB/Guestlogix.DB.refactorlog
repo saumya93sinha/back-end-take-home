@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="5f767f3a-f7e7-48ea-91ad-f7e3621f8294" ChangeDateTime="05/12/2019 16:52:20">
+    <Property Name="ElementName" Value="[dbo].[Airport].[Latitute]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Airport]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Latitude" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="683a1b0d-a20f-4c5c-8d8c-70bde55ed39e" ChangeDateTime="05/12/2019 17:02:09">
+    <Property Name="ElementName" Value="[dbo].[Airline].[threeDigitCode]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Airline]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ThreeDigitCode" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="33a9991d-5eeb-4b7b-a49f-013403bd60d2" ChangeDateTime="05/12/2019 17:02:12">
+    <Property Name="ElementName" Value="[dbo].[Airline].[twoDigitCode]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Airline]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TwoDigitCode" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="88596523-ec8d-4925-89b8-08ff83519cb7" ChangeDateTime="05/12/2019 17:02:20">
+    <Property Name="ElementName" Value="[dbo].[Airline].[name]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Airline]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Name" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d1439f1d-5c4e-4874-bb6c-478c64f8f93f" ChangeDateTime="05/12/2019 17:14:48">
+    <Property Name="ElementName" Value="[dbo].[Route].[IX_Route_Column]" />
+    <Property Name="ElementType" Value="SqlIndex" />
+    <Property Name="ParentElementName" Value="[dbo].[Route]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[IX_Route_Origin]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="816b2b41-5ebf-4421-aa1e-1c24dc36a3c4" ChangeDateTime="05/12/2019 17:15:42">
+    <Property Name="ElementName" Value="[dbo].[Route].[IX_Route_Origin]" />
+    <Property Name="ElementType" Value="SqlIndex" />
+    <Property Name="ParentElementName" Value="[dbo].[Route]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[IX_Route_Origin_Destination]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="af7e0c83-68e5-499c-9915-52e1459d1999" ChangeDateTime="05/12/2019 17:17:40">
+    <Property Name="ElementName" Value="[dbo].[Route].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Route]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RouteId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e6e50e9a-05c8-42e7-b629-2ad47a906697" ChangeDateTime="05/12/2019 17:17:52">
+    <Property Name="ElementName" Value="[dbo].[Airline].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Airline]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AirlineId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fa1ceb76-05cb-40a0-80a5-ff033765db54" ChangeDateTime="05/12/2019 17:17:58">
+    <Property Name="ElementName" Value="[dbo].[Airport].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Airport]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AirportId" />
+  </Operation>
+</Operations>
