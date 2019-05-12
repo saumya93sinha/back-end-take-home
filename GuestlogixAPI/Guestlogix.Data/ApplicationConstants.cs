@@ -10,5 +10,6 @@ namespace Guestlogix.Data
         public static string SameOriginDestination = "Origin Airport IATA and Destination Airport IATA are same!";
         public static string NoRouteFound = "No route found between origin and destination";
         public static string InvalidOriginDestination = "Invalid origin or destination";
+        public static string NullOrEmptyOriginDestination = "Origin IATA or Destination IATA is either Null or Empty";
     }
 }

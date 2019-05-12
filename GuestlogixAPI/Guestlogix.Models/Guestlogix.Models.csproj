@@ -110,7 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AirlineModel.cs" />
-    <Compile Include="RouteSearchParam.cs" />
     <Compile Include="AirportModel.cs" />
     <Compile Include="RouteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

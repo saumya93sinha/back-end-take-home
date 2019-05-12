@@ -28,6 +28,5 @@ C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.Models\bin\Microsoft.A
 C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.Models\bin\Microsoft.AI.WindowsServer.xml
 C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.Models\bin\Microsoft.ApplicationInsights.xml
 C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.Models\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.Models\obj\Debug\Guestlogix.Models.csprojResolveAssemblyReference.cache
 C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.Models\obj\Debug\Guestlogix.Models.dll
 C:\Guestlogix\back-end-take-home\GuestlogixAPI\Guestlogix.Models\obj\Debug\Guestlogix.Models.pdb

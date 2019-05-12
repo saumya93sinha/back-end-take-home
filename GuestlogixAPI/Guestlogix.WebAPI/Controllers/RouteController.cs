@@ -35,13 +35,13 @@ namespace Guestlogix.WebAPI.Controllers
         /// </summary>
         /// <param name="routeSearchParam"></param>
         /// <returns>Shortest route as a string</returns>
-        [HttpPost]
+        [HttpGet]
         [Route("route/getshortestroute")]
-        public IHttpActionResult GetShortestRoute(RouteSearchParam routeSearchParam)
+        public IHttpActionResult GetShortestRoute(string origin, string destination)
         {
             try
             {
-                return Ok(_routeBAL.GetShortestRoute(routeSearchParam.Origin, routeSearchParam.Destination));
+                return Ok(_routeBAL.GetShortestRoute(origin, destination));
             }
             catch (Exception e)
             {

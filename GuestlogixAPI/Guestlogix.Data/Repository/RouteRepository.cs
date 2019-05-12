@@ -208,17 +208,20 @@ namespace Guestlogix.Data.Repository
         {
             string shortestPath = ApplicationConstants.NoRouteFound;
 
-            if (origin != null && destination != null && origin == destination)
-            {
-                shortestPath = ApplicationConstants.SameOriginDestination;
-                return shortestPath;
-            }
-
-            if (origin != null && destination != null && airportList.Any(x => x.IATA3 == origin) && airportList.Any(x => x.IATA3 == destination))
+            if (origin != null && destination != null)
             {
                 origin = origin.ToUpper();
                 destination = destination.ToUpper();
 
+                if (origin == destination)
+                {
+                    shortestPath = ApplicationConstants.SameOriginDestination;
+                    return shortestPath;
+                }
+            }
+
+            if (!String.IsNullOrEmpty(origin) && !String.IsNullOrEmpty(destination) && airportList.Any(x => x.IATA3 == origin) && airportList.Any(x => x.IATA3 == destination))
+            {
                 //This step will convert tree node and child structures for all origins and flights originating from them
                 Dictionary<string, List<RouteModel>> originFlightTree = new Dictionary<string, List<RouteModel>>();
                 foreach (var route in routeList)
@@ -247,7 +250,10 @@ namespace Guestlogix.Data.Repository
             }
             else
             {
-                shortestPath = ApplicationConstants.InvalidOriginDestination;
+                if(String.IsNullOrEmpty(origin) || String.IsNullOrEmpty(destination))
+                    shortestPath = ApplicationConstants.NullOrEmptyOriginDestination;
+                else
+                    shortestPath = ApplicationConstants.InvalidOriginDestination;
             }
 
             return shortestPath;

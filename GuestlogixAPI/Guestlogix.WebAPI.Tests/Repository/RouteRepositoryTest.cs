@@ -92,10 +92,47 @@ namespace Guestlogix.WebAPI.Tests.Controllers
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(ApplicationConstants.InvalidOriginDestination, result);
+            Assert.AreEqual(ApplicationConstants.NullOrEmptyOriginDestination, result);
 
         }
 
+        /// <summary>
+        /// Checks if empty values are set for origin 
+        /// </summary>
+        [TestMethod]
+        public void GetShortestRoute_EmptyOrigin()
+        {
+            // Arrange
+            string origin = "";
+            string destination = "ABC";
+
+            // Act
+            var result = _routeRepository.GetShortestRoute(origin, destination);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(ApplicationConstants.NullOrEmptyOriginDestination, result);
+
+        }
+
+        /// <summary>
+        /// Checks if empty values are set for destination 
+        /// </summary>
+        [TestMethod]
+        public void GetShortestRoute_EmptyDestination()
+        {
+            // Arrange
+            string origin = "ABK";
+            string destination = "";
+
+            // Act
+            var result = _routeRepository.GetShortestRoute(origin, destination);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(ApplicationConstants.NullOrEmptyOriginDestination, result);
+
+        }
         /// <summary>
         /// ABJ and BRU has direct connection. This test validates that.
         /// </summary>

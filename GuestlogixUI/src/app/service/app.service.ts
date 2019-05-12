@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http'
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Airport } from '../model/Airport';
@@ -14,13 +14,19 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   getShortestRoute(routeSearchParam: RouteSearchParam): Observable<string> {
+    let httpParams = new HttpParams()
+                        .set('origin', routeSearchParam.Origin)
+                  .set('destination', routeSearchParam.Destination);
+                  
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
-      })
+      }),
+      params: httpParams
     };
+
     return this.http
-      .post<string>(this.ApiBaseUrl + '/route/getshortestroute', JSON.stringify(routeSearchParam), httpOptions)
+      .get<string>(this.ApiBaseUrl + '/route/getshortestroute', httpOptions)
       .pipe(catchError(this.handleError));
   }
 
