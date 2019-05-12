@@ -104,7 +104,8 @@ Explanation of Code:
     This has components, services, models, modules, routing modules.
 	Typescript, HTML and CSS are used in creating this Angular Application.
 	
-Proper comments have been placed in the code to better code understanding and maintainability.
+Proper comments have been placed in the code for better code understanding and maintainability.
+I have also attached screenshots of WebAPI and Application main UI page for reference.
 
 Thanks!
 It was a pleasure working on this application!
